@@ -1,5 +1,8 @@
 package edu.wctc;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -57,7 +60,11 @@ public class Main {
                     searchByName();
                     break;
                 case "4":
-                    // doControlBreak();
+                    try{
+                        doControlBreakTwo();
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case "5":
                     userContinue = false;
@@ -102,4 +109,71 @@ public class Main {
         String ans = keyboard.nextLine();
         cookbook.printByNameSearch(ans);
     }
+
+    private void doControlBreak(){
+            System.out.println("Not done!");
+
+            Meal[] demMeals = cookbook.getMeals();
+            int brek=0, lunc=0, dinn=0, dese=0;
+            for(Meal m : demMeals){
+
+                if(m.getMealType().getMeal()=="Dessert"){
+
+                }
+                else if(m.getMealType().getMeal()=="Dinner"){
+
+                }
+                else if(m.getMealType().getMeal()=="Lunch"){
+
+                }
+                else if(m.getMealType().getMeal()=="Breakfast"){
+
+                }
+            }
+    }
+
+    private void doControlBreakTwo() throws IOException {
+
+        Meal[] demMeals = cookbook.getMeals();
+
+        MealTypeSum dessert = new MealTypeSum();
+        MealTypeSum dinner = new MealTypeSum();
+        MealTypeSum lunch = new MealTypeSum();
+        MealTypeSum breakfast = new MealTypeSum();
+
+        for(Meal m : demMeals){
+
+            try{
+                System.out.println(m.toString());
+                if(m.getMealType().getMeal()=="Dessert"){
+                    dessert.addValue(m.getCalories());
+                }
+                else if(m.getMealType().getMeal()=="Dinner"){
+                    dinner.addValue(m.getCalories());
+                }
+                else if(m.getMealType().getMeal()=="Lunch"){
+                    lunch.addValue(m.getCalories());
+                }
+                else if(m.getMealType().getMeal()=="Breakfast"){
+                    breakfast.addValue(m.getCalories());
+                }
+            }catch(NullPointerException e){
+                System.out.println("Had an error");
+            }
+
+        }
+        PrintWriter ballpoint = new PrintWriter(new FileWriter("output.csv"));
+        ballpoint.println("Meal Type,Total,Mean,Min,Max,Median");
+        //breakfast
+        ballpoint.println("Breakfast,"+breakfast.getTotalCal()+","+breakfast.getMeanCal()+","+breakfast.getMinCal()+","+breakfast.getMaxCal()+","+breakfast.getMedianCal());
+        //lunch
+        ballpoint.println("Lunch,"+lunch.getTotalCal()+","+lunch.getMeanCal()+","+lunch.getMinCal()+","+lunch.getMaxCal()+","+lunch.getMedianCal());
+        //dinner
+        ballpoint.println("Dinner,"+dinner.getTotalCal()+","+dinner.getMeanCal()+","+dinner.getMinCal()+","+dinner.getMaxCal()+","+dinner.getMedianCal());
+        //Dessert
+        ballpoint.println("Dessert,"+dessert.getTotalCal()+","+dessert.getMeanCal()+","+dessert.getMinCal()+","+dessert.getMaxCal()+","+dessert.getMedianCal());
+
+        ballpoint.close();
+    }
+
 }
